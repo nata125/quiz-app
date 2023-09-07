@@ -3,16 +3,20 @@ package com.example.quiz.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.quiz.entity.Quiz;
 import com.example.quiz.repository.QuizRepository;
 
+@Service
+@Transactional
 public class QuizServicelmpl implements QuizService {
 
 	@Autowired
 	QuizRepository repository;
 	@Override
-	public Iterable<Quiz> slectAll() {
+	public Iterable<Quiz> selectAll() {
 		return repository.findAll();
 	}
 
@@ -22,7 +26,7 @@ public class QuizServicelmpl implements QuizService {
 	}
 
 	@Override
-	public Optional<Quiz> selectOneRamdomQuiz() {
+	public Optional<Quiz> selectOneRandomQuiz() {
 		Integer randomId = repository.getRandomId();
 		
 		//Integerだからnullありえる
