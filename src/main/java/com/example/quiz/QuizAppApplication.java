@@ -29,7 +29,7 @@ public class QuizAppApplication {
 //		showOne();
 //		updateQuiz();
 //		deleteQuiz();
-		doQuiz();
+//		doQuiz();
 	}
 	
 	private void setup() {
