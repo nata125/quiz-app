@@ -58,7 +58,6 @@ public class QuizController {
 		if(!bindingResult.hasErrors()) {
 			service.insertQuiz(quiz);
 			redirectAttributes.addFlashAttribute("complete", "登録完了!");
-			System.out.println(redirectAttributes.getFlashAttributes().toString());
 			return "redirect:/quiz";
 		}else {
 			return showList(quizForm, model);
@@ -131,7 +130,34 @@ public class QuizController {
 	public String delete(@RequestParam("id") String id, Model model, RedirectAttributes redirectAttributes) {
 		service.deleteQuizById(Integer.parseInt(id));
 		redirectAttributes.addFlashAttribute("delcomplete", "削除完了!");
-		System.out.println(redirectAttributes.getFlashAttributes().toString());
 		return "redirect:/quiz";
+	}
+	
+	/** クイズで遊ぶ */
+	@GetMapping("/play")
+	public String showQuiz(QuizForm quizForm, Model model) {
+		Optional<Quiz> quizOpt = service.selectOneRandomQuiz();
+		if(quizOpt.isPresent()) {
+			Optional<QuizForm> quizFormOpt = quizOpt.map(t -> makeQuizForm(t));
+			quizForm = quizFormOpt.get();
+		}else {
+			model.addAttribute("msg", "問題がないよーん");
+			return "play";
+		}
+		
+		model.addAttribute("quizForm", quizForm);
+		return "play";
+	}
+	
+	@PostMapping("/check")
+	public String checkQuiz(QuizForm quizForm, @RequestParam Boolean answer, Model model) {
+		
+		if(service.checkQuiz(quizForm.getId(), answer)) {
+			model.addAttribute("msg", "正解じゃ");
+		}else {
+			model.addAttribute("msg", "不正解だ");
+		}
+		
+		return "answer";
 	}
 }
