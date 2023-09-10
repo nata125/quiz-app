@@ -4,13 +4,16 @@
 <meta charset="UTF-8">
 <title>「〇×クイズ」アプリ :CRUD</title>
 </head>
+
 <body>
+	<div>
 	<h1>「〇×クイズ」アプリ :CRUD</h1>
 	<h3 th:text="${title}">タイトル</h3>
-	<!--/*登録・更新完了コメント*/ -->
-	<p th:if="${complete}" th:text="${complete}" style="color:blue"></p>
 	
-	<!--/*Form*/-->
+	<!-- /*登録・更新完了コメント*/ -->
+	<p th:if="${complete}" th:text="${complete}" style="color:blue"></p>
+
+	<!-- /*Form*/ -->
 	<form method="post"
 		th:action="${quizForm.newQuiz}? @{/quiz/insert} : @{/quiz/update}"
 		th:object="${quizForm}">
@@ -32,7 +35,7 @@
 	</form>
 	<br>
 	<hr>
-	
+	</div>
 	<!-- /* 新規登録時のみ表示 */ -->
 	<div th:if="${quizForm.newQuiz}" style="margin: 10px">
 		<h3>登録クイズ一覧:<a th:href="@{/quiz/play}">プレイ</a><br></h3>
@@ -58,13 +61,14 @@
 				<td th:text="${obj.author}"></td>
 				<!-- /*編集ボタン*/ -->
 				<td>
-					<form method="get" th;action="@{/quiz/{id}({id=${obj.id})}">
+					<form method="get" th:action="@{/quiz/{id}(id=${obj.id})}">
 						<input type="submit" value="編集">
 					</form>
 				</td>
 				<!-- /*削除ボタン*/ -->
 				<td>
 					<form method="post" th:action="@{/quiz/delete}">
+						<input type="hidden" name="id" th:value="${obj.id}">
 						<input type="submit" value="削除">
 					</form>
 				</td>
@@ -76,7 +80,7 @@
 	</div>
 	
 	<p th:unless="${quizForm.newQuiz}">
-		<a href="#" th:htrf="@{/quiz}">CRUD画面へ戻る</a>
+		<a href="#" th:href="@{/quiz}">CRUD画面へ戻る</a>
 	</p>
 </body>
 </html>
